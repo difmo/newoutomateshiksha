@@ -13,21 +13,19 @@ import 'homescreen.dart';
 import 'loginpage.dart';
 
 class splashscreen extends StatefulWidget {
-  const splashscreen({Key? key}) : super(key: key);
+  const splashscreen({super.key});
 
   @override
   State<splashscreen> createState() => _splashscreenState();
 }
 
 class _splashscreenState extends State<splashscreen> {
-
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 4),() async {
-
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>loginpage()));
-
+    Timer(Duration(seconds: 4), () async {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => loginpage()));
     });
   }
 
@@ -37,7 +35,9 @@ class _splashscreenState extends State<splashscreen> {
       backgroundColor: appcolors.primaryColor,
       body: DecoratedBox(
         decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage("assets/images/splash.jpg"), fit: BoxFit.cover),),
+          image: DecorationImage(
+              image: AssetImage("assets/images/splash.jpg"), fit: BoxFit.cover),
+        ),
         child: Container(
           child: Column(
             children: [
@@ -47,15 +47,20 @@ class _splashscreenState extends State<splashscreen> {
                   color: Colors.transparent,
                   shadowColor: appcolors.whiteColor,
                   elevation: 0,
-                  shape:  RoundedRectangleBorder(
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child:  Image.asset('assets/Icons/loginlogo.png',width: 120,height: 120,) ,
+                  child: Image.asset(
+                    'assets/Icons/loginlogo.png',
+                    width: 120,
+                    height: 120,
+                  ),
                 ),
               ),
               Center(
                 child: Image.asset(
-                  "assets/Gif/splashgif.gif", ),
+                  "assets/Gif/splashgif.gif",
+                ),
               ),
             ],
           ),

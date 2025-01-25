@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
-
-// import 'package:newoutomateshiksha/Utilles/spac.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Models/homeworkmodal.dart';
 import 'Resource/Colors/app_colors.dart';
@@ -19,25 +17,27 @@ Future<List<homeworkmodal>> homeworkfunction(String adate) async {
   String? studentid = prefs.getString('studentid')!;
   String? BranchID = prefs.getString('BranchID')!;
   final response = await http.get(Uri.parse(
-      'http://shikshaappservice.outomate.com/ShikshaAppService.svc/stu_homework/stuid/' +
-          studentid +
-          '/brid/' +
-          BranchID +
-          '/hwdate/$adate'));
-  print("ffffffffffff$studentid");
+      'https://shikshaappservice.kalln.com/api/Home/stu_homework/stuid/$studentid/brid/$BranchID/hwdate/$adate'));
+
+  // Print base URL and response
+  print(
+      "Base URL: https://shikshaappservice.kalln.com/api/Home/stu_homework/stuid/$studentid/brid/$BranchID/hwdate/$adate");
+  print("Response: ${response.body}");
+
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-
     return parsed
         .map<homeworkmodal>((json) => homeworkmodal.fromMap(json))
         .toList();
+  } else if (response.statusCode == 500) {
+    throw Exception('Server Error: ${response.statusCode}');
   } else {
-    throw Exception('Failed to load notice');
+    throw Exception('Failed to load homework');
   }
 }
 
 class studenthomework extends StatefulWidget {
-  const studenthomework({Key? key}) : super(key: key);
+  const studenthomework({super.key});
 
   @override
   State<studenthomework> createState() => _studenthomeworkState();
@@ -56,6 +56,7 @@ class _studenthomeworkState extends State<studenthomework> {
       "https://images.news18.com/ibnlive/uploads/2020/08/1596522361_pdf.jpg";
   String imgurl =
       "https://img.freepik.com/premium-vector/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.jpg";
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -122,7 +123,7 @@ class _studenthomeworkState extends State<studenthomework> {
                         padding: EdgeInsets.fromLTRB(15, 10, 10, 10),
                         color: CupertinoColors.systemGrey4,
                         child: Text(
-                          "$fdate",
+                          fdate,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 14),
                         ),
@@ -160,13 +161,17 @@ class _studenthomeworkState extends State<studenthomework> {
                   child: FutureBuilder<List<homeworkmodal>>(
                     future: homeworkmodalfunction,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasData) {
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
                           itemBuilder: (_, index) => getRow(index, snapshot),
                         );
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text(' ${snapshot.error}'));
                       } else {
-                        return Center(child: CircularProgressIndicator());
+                        return Center(child: Text('No Data Found'));
                       }
                     },
                   ),
@@ -185,14 +190,14 @@ class _studenthomeworkState extends State<studenthomework> {
       color: Colors.white,
       shadowColor: appcolors.primaryColor,
       elevation: 2,
-      child: Container(
+      child: SizedBox(
         height: 80,
         child: ListTile(
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
+              SizedBox(
                   height: 30,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -234,9 +239,7 @@ class _studenthomeworkState extends State<studenthomework> {
                                 }
                               },
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            SizedBox(width: 5),
                             InkWell(
                               child: buttons(
                                 title: 'submit',
@@ -263,9 +266,7 @@ class _studenthomeworkState extends State<studenthomework> {
                                 }
                               },
                             ),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            SizedBox(width: 5),
                             InkWell(
                               child: buttons(
                                 title: 'remarks',
@@ -286,7 +287,7 @@ class _studenthomeworkState extends State<studenthomework> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              homeworkitemremarks(
+                                              HomeworkItemRemarks(
                                                   openrequest:
                                                       snapshot.data![index])));
                                 }

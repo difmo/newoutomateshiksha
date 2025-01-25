@@ -1,30 +1,64 @@
-
 import 'dart:convert';
 
-List<classworkmodal> postFromJson(String str) =>
-    List<classworkmodal>.from(json.decode(str).map((x) => classworkmodal.fromMap(x)));
+// Function to parse JSON string into a list of ClassworkModel objects
+List<ClassworkModel> classworkFromJson(String str) => List<ClassworkModel>.from(
+    json.decode(str).map((x) => ClassworkModel.fromMap(x)));
 
-
-class classworkmodal {
-  classworkmodal({
-    required this.ContName,
-    required this.SubjectName,
-    required this.TopicName,
-    required this.VideoLink,
-    required this.fullpath,
+// Model class for Classwork
+class ClassworkModel {
+  ClassworkModel({
+    this.subjectMasterID,
+    this.subjectName,
+    this.classNm,
+    this.datebyStudy,
+    this.contytypID,
+    this.videoLink,
+    this.filename,
+    this.topicName,
+    this.contName,
+    this.fullpath,
+    this.errorMessage,
   });
 
-  String ContName;
-  String SubjectName ;
-  String TopicName;
-  String VideoLink;
-  String fullpath;
+  String? subjectMasterID;
+  String? subjectName;
+  String? classNm;
+  String? datebyStudy;
+  String? contytypID;
+  String? videoLink;
+  String? filename;
+  String? topicName;
+  String? contName;
+  String? fullpath;
+  String? errorMessage;
 
-  factory classworkmodal.fromMap(Map<String, dynamic> json) => classworkmodal(
-    ContName: json["ContName"],
-    SubjectName: json["SubjectName"],
-    TopicName: json["TopicName"],
-    VideoLink: json["VideoLink"],
-    fullpath: json["fullpath"],
-  );
+  // Factory constructor to create an instance from JSON Map
+  factory ClassworkModel.fromMap(Map<String, dynamic> json) => ClassworkModel(
+        subjectMasterID: json["subjectMasterID"],
+        subjectName: json["subjectName"],
+        classNm: json["classNm"],
+        datebyStudy: json["datebyStudy"],
+        contytypID: json["contytypID"],
+        videoLink: json["videoLink"],
+        filename: json["filename"],
+        topicName: json["topicName"],
+        contName: json["contName"],
+        fullpath: json["fullpath"],
+        errorMessage: json["errormessage"],
+      );
+
+  // Method to convert an instance to JSON Map
+  Map<String, dynamic> toMap() => {
+        "subjectMasterID": subjectMasterID,
+        "subjectName": subjectName,
+        "classNm": classNm,
+        "datebyStudy": datebyStudy,
+        "contytypID": contytypID,
+        "videoLink": videoLink,
+        "filename": filename,
+        "topicName": topicName,
+        "contName": contName,
+        "fullpath": fullpath,
+        "errormessage": errorMessage,
+      };
 }

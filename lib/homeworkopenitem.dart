@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'Models/homeworkmodal.dart';
@@ -29,10 +28,10 @@ class _homeworkopenitemState extends State<homeworkopenitem> {
         children: [
           Expanded(
             child: InAppWebView(
-                initialUrlRequest: URLRequest(
-                    // url: Uri.parse("${widget.openrequest.stu_HWpath}"))
+              initialUrlRequest: URLRequest(
+                  // url: Uri.parse("${widget.openrequest.stu_HWpath}"))
+                  ),
             ),
-          ),
           )
         ],
       ),

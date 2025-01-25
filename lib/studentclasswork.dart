@@ -1,6 +1,3 @@
-
-
-
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,139 +6,141 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Models/classworkmodal.dart';
 import 'Resource/Colors/app_colors.dart';
-import 'Utilles/calender.dart';
 import 'Utilles/toasts.dart';
 import 'classworkopenitem.dart';
 
+Future<List<ClassworkModel>> fetchClasswork(String adate) async {
+  try {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? classId = prefs.getString('clsstrucidFK');
+    String? branchId = prefs.getString('BranchID');
 
-Future<List<classworkmodal>> homeworkmodalfunction(String adate) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? Classid =prefs.getString('clsstrucidFK')!;
-  String? brid =prefs.getString('BranchID')!;
-  final response = await http.get(Uri.parse('http://shikshaappservice.outomate.com/ShikshaAppService.svc/stu_classwork/Classid/'+Classid+'/brid/'+brid+'/cwdate/$adate'));
-  print("ggggg$Classid");
-  if (response.statusCode == 200) {
-    final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
+    if (classId == null || branchId == null) {
+      throw Exception("Missing class ID or branch ID in SharedPreferences.");
+    }
 
-    return parsed.map<classworkmodal>((json) => classworkmodal.fromMap(json)).toList();
-  } else {
-    throw Exception('Failed to load notice');
+    final baseUrl =
+        'https://shikshaappservice.kalln.com/api/Home/stu_classwork/Classid/$classId/brid/$branchId/cwdate/$adate';
+    print("Fetching classwork from URL: $baseUrl");
+
+    final response = await http.get(Uri.parse(baseUrl));
+
+    if (response.statusCode == 200) {
+      final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
+      return parsed
+          .map<ClassworkModel>((json) => ClassworkModel.fromMap(json))
+          .toList();
+    } else {
+      throw Exception("Failed to load classwork: ${response.statusCode}");
+    }
+  } catch (e) {
+    throw Exception("Error fetching classwork: $e");
   }
 }
 
-class studentclasswork extends StatefulWidget {
-  const studentclasswork({Key? key}) : super(key: key);
+class StudentClasswork extends StatefulWidget {
+  const StudentClasswork({super.key});
 
   @override
-  State<studentclasswork> createState() => _studentclassworkState();
+  State<StudentClasswork> createState() => _StudentClassworkState();
 }
 
-class _studentclassworkState extends State<studentclasswork> {
-
+class _StudentClassworkState extends State<StudentClasswork> {
   DateTime selectedDate = DateTime.now();
-  String fdate=DateFormat('EEEE-dd MMMM yyyy').format(DateTime.now());
-  String adate=DateFormat('yyyy-MM-dd').format(DateTime.now());
-  late Future<List<classworkmodal>> classworkmodalfunction;
-  String yturl="https://www.howtogeek.com/wp-content/uploads/2019/10/youtube-logo.jpg?height=200p&trim=2,2,2,2";
-  String docurl="https://png.pngtree.com/png-vector/20190413/ourlarge/pngtree-vector-doc-icon-png-image_944072.jpg";
-  String pdfurl="https://images.news18.com/ibnlive/uploads/2020/08/1596522361_pdf.jpg";
-  String imgurl="https://img.freepik.com/premium-vector/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.jpg";
+  late Future<List<ClassworkModel>> classworkFuture;
+
+  String fdate = DateFormat('EEEE, dd MMMM yyyy').format(DateTime.now());
+  String adate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+  String yturl =
+      "https://www.howtogeek.com/wp-content/uploads/2019/10/youtube-logo.jpg?height=200p&trim=2,2,2,2";
+  String docurl =
+      "https://png.pngtree.com/png-vector/20190413/ourlarge/pngtree-vector-doc-icon-png-image_944072.jpg";
+  String pdfurl =
+      "https://images.news18.com/ibnlive/uploads/2020/08/1596522361_pdf.jpg";
+  String imgurl =
+      "https://img.freepik.com/premium-vector/gallery-icon-picture-landscape-vector-sign-symbol_660702-224.jpg";
+
   @override
   void initState() {
     super.initState();
-    classworkmodalfunction = homeworkmodalfunction(adate);
+    classworkFuture = fetchClasswork(adate);
   }
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1990, 1),
-        lastDate: DateTime.now());
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1990, 1),
+      lastDate: DateTime.now(),
+    );
+
     if (picked != null && picked != selectedDate) {
-      selectedDate = picked;
+      setState(() {
+        selectedDate = picked;
+        fdate = DateFormat('EEEE, dd MMMM yyyy').format(selectedDate);
+        adate = DateFormat('yyyy-MM-dd').format(selectedDate);
+        classworkFuture = fetchClasswork(adate);
+      });
     }
-    setState(() {
-      DateFormat formatter1 = DateFormat('EEEE-dd MMMM yyyy');
-      DateFormat formatter2 = DateFormat('yyyy-MM-dd');
-      fdate = formatter1.format(selectedDate);
-      adate = formatter2.format(selectedDate);
-      classworkmodalfunction = homeworkmodalfunction(adate);
-    });
-
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Classwork",style:TextStyle(fontWeight: FontWeight.bold,color:appcolors.whiteColor)),
+        title: const Text(
+          "Classwork",
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+        ),
         backgroundColor: appcolors.primaryColor,
-        iconTheme: IconThemeData(color: appcolors.whiteColor),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Container(
-        padding: EdgeInsets.only(top: 10),
+        padding: const EdgeInsets.only(top: 10),
         color: appcolors.primaryColor,
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(40.0),topRight: Radius.circular(40.0),),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(40.0),
+            topRight: Radius.circular(40.0),
+          ),
           child: Container(
-            color: appcolors.whiteColor,
+            color: Colors.white,
             child: Column(
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.fromLTRB(15,30,10,10),
-                  child: Text("Today Class Work",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),),
-                ),
-                Container(
-                  //padding: EdgeInsets.fromLTRB(10,10,10,10),
-                  color: CupertinoColors.systemGrey4,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.fromLTRB(15,10,10,10),
-                        color: CupertinoColors.systemGrey4,
-                        child: Text("$fdate",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 14),),
-                      ),
-                      InkWell(
-                        child: Container(
-                          padding: EdgeInsets.fromLTRB(10,10,10,10),
-                          color: appcolors.primaryColor,
-                          child: Row(
-                            children: [
-                              Icon(Icons.calendar_month_outlined,color: appcolors.whiteColor,),
-                              Text("Select Date",style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 14,color:appcolors.whiteColor)),
-                            ],
-                          ),
-                        ),
-                        onTap: (){
-                          setState(() {
-                              selectDate(context);
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  height: 450,
-                  padding: EdgeInsets.fromLTRB(1,10,1,10),
-                  child:  FutureBuilder<List<classworkmodal>>(
-                    future: classworkmodalfunction,
+                _buildDateSelector(),
+                Expanded(
+                  child: FutureBuilder<List<ClassworkModel>>(
+                    future: classworkFuture,
                     builder: (context, snapshot) {
-                      if (snapshot.hasData) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            "Error: ${snapshot.error}",
+                            style: const TextStyle(color: Colors.red),
+                          ),
+                        );
+                      } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            "No classwork found for the selected date.",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        );
+                      } else if (snapshot.hasData) {
                         return ListView.builder(
                           itemCount: snapshot.data!.length,
-                          itemBuilder: (_, index) => getRow(index,snapshot),
+                          itemBuilder: (_, index) => _buildClassworkCard(
+                            snapshot.data![index],
+                          ),
                         );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
                       }
+                      return const SizedBox();
                     },
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -149,51 +148,108 @@ class _studentclassworkState extends State<studentclasswork> {
       ),
     );
   }
-  Widget getRow(int index,var snapshot) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(5,0,5,1),
-      color: Colors.white,
-      shadowColor: appcolors.primaryColor,
-      elevation: 2,
-      child: Container(
-        height: 80,
-        child: ListTile(
-          onTap: () {
-              if(snapshot.data![index].SubjectName==null){
-                toasts().toastsShortone("No Records Found");
-              }else{
-                Navigator.push(context, MaterialPageRoute(builder: (context) => classworkopenitem(openrequest:snapshot.data![index])));
-              }
-          },
-          leading: CircleAvatar(
-            radius: 25,
-            backgroundColor: appcolors.primaryColor,
-            child: CircleAvatar(
-              radius: 23,
-              backgroundColor: Colors.white,
-              backgroundImage: snapshot.data![index].ContName=='Image' ? NetworkImage(imgurl) : snapshot.data![index].ContName=='File' ? NetworkImage(pdfurl) : snapshot.data![index].ContName=='Video Link' ? NetworkImage(yturl) : NetworkImage(docurl),
-            ),
-          ),
-          title: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(height: 30,width: 200,child: Text("${snapshot.data![index].SubjectName}",style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16),overflow: TextOverflow.ellipsis,)),
-                      Text("${snapshot.data![index].TopicName}",style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 12,color: CupertinoColors.systemGrey2),overflow: TextOverflow.ellipsis,),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
 
+  /// Date selector widget
+  Widget _buildDateSelector() {
+    return Container(
+      color: CupertinoColors.systemGrey4,
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Text(
+              fdate,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () => selectDate(context),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              color: appcolors.primaryColor,
+              child: Row(
+                children: const [
+                  Icon(Icons.calendar_month_outlined, color: Colors.white),
+                  SizedBox(width: 5),
+                  Text(
+                    "Select Date",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Classwork card widget
+  Widget _buildClassworkCard(ClassworkModel item) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      elevation: 2,
+      child: ListTile(
+        onTap: () {
+          if (item.subjectName == null) {
+            toasts().toastsShortone("No Records Found");
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => classworkopenitem(openrequest: item),
+              ),
+            );
+          }
+        },
+        leading: CircleAvatar(
+          radius: 25,
+          backgroundColor: appcolors.primaryColor,
+          child: CircleAvatar(
+            radius: 23,
+            backgroundColor: Colors.white,
+            backgroundImage: _getImageForContentType(item.contName),
+          ),
+        ),
+        title: Text(
+          item.subjectName ?? "Unknown Subject",
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Text(
+          item.topicName ?? "No Topic Available",
+          style: const TextStyle(
+            fontSize: 12,
+            color: CupertinoColors.systemGrey2,
+          ),
+          overflow: TextOverflow.ellipsis,
         ),
       ),
     );
+  }
+
+  /// Helper method to get the appropriate image based on content type
+  ImageProvider _getImageForContentType(String? contentType) {
+    if (contentType == 'Image') {
+      return NetworkImage(imgurl);
+    } else if (contentType == 'File') {
+      return NetworkImage(pdfurl);
+    } else if (contentType == 'Video Link') {
+      return NetworkImage(yturl);
+    } else {
+      return NetworkImage(docurl);
+    }
   }
 }

@@ -27,7 +27,7 @@ import 'studentnotices.dart';
 import 'studentresults.dart';
 
 class homescreen extends StatefulWidget implements PreferredSizeWidget {
-  const homescreen({Key? key}) : super(key: key);
+  const homescreen({super.key});
 
   @override
   State<homescreen> createState() => _homescreenState();
@@ -58,7 +58,7 @@ class _homescreenState extends State<homescreen> {
   bool rotate = false;
   bool isoffline = false;
   bool valuefirst = true;
-  bool _isObscure = true;
+  final bool _isObscure = true;
   bool ActiveConnection = false;
   StreamSubscription? internetconnection;
 
@@ -243,11 +243,10 @@ class _homescreenState extends State<homescreen> {
                           children: <Widget>[
                             Card(
                                 child: Image.network(
-                              '$BranchLogo',
+                              BranchLogo,
                               height: 80,
                               width: 80,
-                            )
-                            ),
+                            )),
                           ],
                         ),
                       ),
@@ -256,11 +255,11 @@ class _homescreenState extends State<homescreen> {
                   space(),
                   Container(
                     child: boldtext(
-                      title: '$BranchName',
-                      fontSize: 30,
+                      title: BranchName,
+                      fontSize: 16,
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 150,
                     child: Card(
                       margin: EdgeInsets.fromLTRB(15, 10, 15, 20),
@@ -306,7 +305,7 @@ class _homescreenState extends State<homescreen> {
                                         MediaQuery.of(context).size.width / 2,
                                     margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                                     child: Text(
-                                      "CLASS : ${ClassNm + " " + secname}",
+                                      "CLASS : ${"$ClassNm $secname"}",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 12,
@@ -356,7 +355,7 @@ class _homescreenState extends State<homescreen> {
             Container(
               child: Column(
                 children: <Widget>[
-                  Container(
+                  SizedBox(
                     height: 420,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
@@ -410,7 +409,7 @@ class _homescreenState extends State<homescreen> {
                                 hasBeenPressed8 = false;
                                 hasBeenPressed9 = false;
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => studentcirculer()));
+                                    builder: (context) => StudentCircular()));
                               });
                             },
                           ),
@@ -432,7 +431,7 @@ class _homescreenState extends State<homescreen> {
                                 hasBeenPressed8 = true;
                                 hasBeenPressed9 = false;
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => studentTimeTable()));
+                                    builder: (context) => StudentTimeTable()));
                               });
                             },
                           ),
@@ -454,7 +453,7 @@ class _homescreenState extends State<homescreen> {
                                 hasBeenPressed8 = false;
                                 hasBeenPressed9 = false;
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => studentclasswork()));
+                                    builder: (context) => StudentClasswork()));
                               });
                             },
                           ),
@@ -542,7 +541,7 @@ class _homescreenState extends State<homescreen> {
                                 hasBeenPressed8 = false;
                                 hasBeenPressed9 = false;
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => studentnotices()));
+                                    builder: (context) => StudentNotices()));
                               });
                             },
                           ),

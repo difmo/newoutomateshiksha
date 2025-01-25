@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class checkinternet extends StatefulWidget {
+  const checkinternet({super.key});
+
   @override
   State<checkinternet> createState() => _checkinternetState();
 }
@@ -52,17 +54,17 @@ class _checkinternetState extends State<checkinternet> {
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: new Text('Are you sure?'),
-            content: new Text('Do you want to exit an App'),
+            title: Text('Are you sure?'),
+            content: Text('Do you want to exit an App'),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 //<-- SEE HERE
-                child: new Text('No'),
+                child: Text('No'),
               ),
               TextButton(
                 onPressed: () => SystemNavigator.pop(), // <-- SEE HERE
-                child: new Text('Yes'),
+                child: Text('Yes'),
               ),
             ],
           ),

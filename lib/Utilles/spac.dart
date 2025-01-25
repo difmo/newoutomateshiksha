@@ -1,11 +1,10 @@
-
-
 import 'package:flutter/cupertino.dart';
 
-class space  extends StatelessWidget {
-  const space ({Key? key,
-     this.height=10,
-  }) : super(key: key);
+class space extends StatelessWidget {
+  const space({
+    super.key,
+    this.height = 10,
+  });
 
   final double height;
 
@@ -17,5 +16,4 @@ class space  extends StatelessWidget {
       ),
     );
   }
-
 }

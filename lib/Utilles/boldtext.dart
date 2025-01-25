@@ -1,23 +1,25 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class boldtext extends StatelessWidget {
-  const boldtext({Key? key,
+  const boldtext({
+    super.key,
     required this.title,
-    this.fontSize=24,
-    this.colors=Colors.white,
-  }) : super(key: key);
+    this.fontSize = 24,
+    this.colors = Colors.white,
+  });
 
   final String title;
-  final  colors;
+  final colors;
   final double fontSize;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Text(title, style:TextStyle(fontSize: fontSize,fontWeight:FontWeight.bold,color: colors),)
-    );
+        child: Text(
+      title,
+      style: TextStyle(
+          fontSize: fontSize, fontWeight: FontWeight.bold, color: colors),
+    ));
   }
 }

@@ -8,18 +8,20 @@ import 'package:newoutomateshiksha_newmaster/splashscreen.dart';
 // import 'package:newoutomateshiksha/webviewtesting.dart';
 import 'Resource/Colors/app_colors.dart';
 
-class MyHttpOverrides extends HttpOverrides{
+class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext? context){
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  HttpOverrides.global = new MyHttpOverrides();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }
 
@@ -35,13 +37,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Outomate Shiksha App',
       theme: ThemeData(
-        primarySwatch:mainAppColor,
+        primarySwatch: mainAppColor,
         fontFamily: 'Poppins',
       ),
-      home:  splashscreen(),
+      home: splashscreen(),
     );
   }
 }
-

@@ -1,6 +1,3 @@
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -23,10 +20,10 @@ class _circuleropenState extends State<circuleropen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:Text('Open Circuler'),
+        title: Text('Open Circuler'),
       ),
       body: SfPdfViewer.network(
-        '${widget.openrequest.circularFileName}',
+        widget.openrequest.circularFileName,
         key: _pdfViewerKey,
       ),
     );
