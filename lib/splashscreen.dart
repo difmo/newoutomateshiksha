@@ -1,15 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:newoutomateshiksha/Utilles/spac.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Resource/Colors/app_colors.dart';
-import 'Utilles/buttons.dart';
-import 'Utilles/textfields.dart';
-import 'Utilles/texts.dart';
-import 'homescreen.dart';
 import 'loginpage.dart';
 
 class splashscreen extends StatefulWidget {

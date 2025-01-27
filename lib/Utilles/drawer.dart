@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:launch_review/launch_review.dart';
 import '../Resource/Colors/app_colors.dart';
@@ -7,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../loginpage.dart';
 import '../profile.dart';
-import '../rateuspage.dart';
 
 class drawer extends StatefulWidget {
   const drawer({super.key});

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'Resource/Colors/app_colors.dart';
 import 'Models/chatquerylistmodal.dart';
