@@ -41,7 +41,8 @@ class _StudentTimeTableState extends State<StudentTimeTable> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? studentid = prefs.getString('studentid');
       String? branchID = prefs.getString('BranchID');
-
+      // print("122:$studentid");
+      // print("cse:$branchID");
       if (studentid == null || branchID == null) {
         throw Exception(
             "Missing student ID or branch ID in SharedPreferences.");
@@ -50,9 +51,10 @@ class _StudentTimeTableState extends State<StudentTimeTable> {
       final baseUrl =
           'https://shikshaappservice.kalln.com/api/Home/stu_tt/stuid/$studentid/brid/$branchID';
       print("Fetching timetable from URL: $baseUrl");
-
+      print("$baseUrl");
       final response = await http.get(Uri.parse(baseUrl));
-
+      print("Response status: ${response.statusCode}");
+      print("Response body: ${response.body}");
       if (response.statusCode == 200) {
         mondayItemlist.clear();
         tuesdayItemlist.clear();
@@ -64,7 +66,7 @@ class _StudentTimeTableState extends State<StudentTimeTable> {
         final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
 
         for (final item in parsed) {
-          switch (item['DayID']) {
+          switch (item['dayID']) {
             case '1':
               mondayItemlist.add(item);
               break;
@@ -149,10 +151,10 @@ class _StudentTimeTableState extends State<StudentTimeTable> {
             child: Container(
               color: appcolors.primaryColor,
               child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(40.0),
-                  topRight: Radius.circular(40.0),
-                ),
+                // borderRadius: const BorderRadius.only(
+                //   topLeft: Radius.circular(40.0),
+                //   topRight: Radius.circular(40.0),
+                // ),
                 child: Container(
                   color: Colors.white,
                   child: Column(
@@ -239,18 +241,18 @@ class _StudentTimeTableState extends State<StudentTimeTable> {
           elevation: 1,
           child: ListTile(
             title: Text(
-              item['SubjectName'] ?? "N/A",
+              item['subjectName'] ?? "N/A",
               style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                   color: appcolors.primaryColor),
             ),
             subtitle: Text(
-              "Lecture: ${item['PeriodName']} | Time: ${item['PeriodTime']}",
+              "Lecture: ${item['periodName']} | Time: ${item['periodTime']}",
               style: const TextStyle(fontSize: 14, color: Colors.black54),
             ),
             trailing: Text(
-              item['TechName'] ?? "N/A",
+              item['techName'] ?? "N/A",
               style: const TextStyle(fontSize: 12, color: Colors.black),
             ),
           ),

@@ -3,53 +3,73 @@ import 'dart:convert';
 List<FeeModel> feeModelFromJson(String str) =>
     List<FeeModel>.from(json.decode(str).map((x) => FeeModel.fromMap(x)));
 
+String feeModelToJson(List<FeeModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class FeeModel {
   FeeModel({
-    this.feeReceiptTermID,
-    this.stuname,
-    this.feetermName,
-    this.feeElementName,
-    this.feeamt,
-    this.concessamt,
-    this.payfee,
-    this.distprecent,
-    this.specldist,
-    this.feeduedt,
-    this.feermk,
-    this.errormessage,
-    this.dueAmt,
-    this.feeGenID,
+    required this.feeReceiptTermID,
+    required this.stuName,
+    required this.feeTermName,
+    required this.feeElementName,
+    required this.feeAmt,
+    required this.concessAmt,
+    required this.payFee,
+    required this.discountPercent,
+    required this.specialDist,
+    required this.feeDueDt,
+    required this.feeRemark,
+    required this.errorMessage,
+    required this.dueAmt,
+    required this.feeGenID,
   });
 
-  String? feeReceiptTermID;
-  String? stuname;
-  String? feetermName;
-  String? feeElementName;
-  String? feeamt;
-  String? concessamt;
-  String? payfee;
-  String? distprecent;
-  String? specldist;
-  String? feeduedt;
-  String? feermk;
-  String? errormessage;
-  String? dueAmt;
-  String? feeGenID;
+  final String feeReceiptTermID;
+  final String stuName;
+  final String feeTermName;
+  final String feeElementName;
+  final double feeAmt;
+  final double concessAmt;
+  final double payFee;
+  final double discountPercent;
+  final String specialDist;
+  final DateTime feeDueDt;
+  final String feeRemark;
+  final String errorMessage;
+  final double dueAmt;
+  final String feeGenID;
 
   factory FeeModel.fromMap(Map<String, dynamic> json) => FeeModel(
-        feeReceiptTermID: json["feeReceiptTermID"],
-        stuname: json["stuname"],
-        feetermName: json["feetermName"],
-        feeElementName: json["fee_elementName"],
-        feeamt: json["feeamt"],
-        concessamt: json["concessamt"],
-        payfee: json["payfee"],
-        distprecent: json["distprecent"],
-        specldist: json["specldist"],
-        feeduedt: json["feeduedt"],
-        feermk: json["feermk"],
-        errormessage: json["errormessage"],
-        dueAmt: json["dueAmt"],
-        feeGenID: json["feeGenID"],
+        feeReceiptTermID: json["feeReceiptTermID"] ?? "",
+        stuName: json["stuname"] ?? "",
+        feeTermName: json["feetermName"] ?? "",
+        feeElementName: json["fee_elementName"] ?? "",
+        feeAmt: double.tryParse(json["feeamt"] ?? "0") ?? 0.0,
+        concessAmt: double.tryParse(json["concessamt"] ?? "0") ?? 0.0,
+        payFee: double.tryParse(json["payfee"] ?? "0") ?? 0.0,
+        discountPercent: double.tryParse(json["distprecent"] ?? "0") ?? 0.0,
+        specialDist: json["specldist"] ?? "NA",
+        feeDueDt: DateTime.tryParse(json["feeduedt"] ?? "") ?? DateTime(1970),
+        feeRemark: json["feermk"] ?? "",
+        errorMessage: json["errormessage"] ?? "",
+        dueAmt: double.tryParse(json["dueAmt"] ?? "0") ?? 0.0,
+        feeGenID: json["feeGenID"] ?? "",
       );
+
+  Map<String, dynamic> toJson() => {
+        "feeReceiptTermID": feeReceiptTermID,
+        "stuname": stuName,
+        "feetermName": feeTermName,
+        "fee_elementName": feeElementName,
+        "feeamt": feeAmt.toString(),
+        "concessamt": concessAmt.toString(),
+        "payfee": payFee.toString(),
+        "distprecent": discountPercent.toString(),
+        "specldist": specialDist,
+        "feeduedt": feeDueDt.toIso8601String(),
+        "feermk": feeRemark,
+        "errormessage": errorMessage,
+        "dueAmt": dueAmt.toString(),
+        "feeGenID": feeGenID,
+      };
 }

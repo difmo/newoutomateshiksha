@@ -1,43 +1,70 @@
-
-
 import 'dart:convert';
 
-List<homeworkmodal> postFromJson(String str) =>
-    List<homeworkmodal>.from(json.decode(str).map((x) => homeworkmodal.fromMap(x)));
-
+List<homeworkmodal> postFromJson(String str) => List<homeworkmodal>.from(
+    json.decode(str).map((x) => homeworkmodal.fromMap(x)));
 
 class homeworkmodal {
   homeworkmodal({
-    required this.FinalDayTimeTable_Id_fk,
-    required this.homework_id,
-    required this.stu_HWpath,
-    required this.stu_doh,
-    required this.stu_dos,
-    required this.subjectmst_name,
-    required this.stu_clientid,
-    required this.stu_classid,
-    required this.subjectmst_id,
+    required this.subjectId,
+    required this.subjectName,
+    required this.dateOfHomework,
+    required this.dateOfSubmission,
+    required this.homeworkPath,
+    required this.classId,
+    required this.className,
+    required this.studentId,
+    required this.studentName,
+    required this.clientId,
+    required this.finalTimeTableId,
+    required this.homeworkId,
+    required this.errorMessage,
+    required this.homeworkUrl,
   });
-
-  String FinalDayTimeTable_Id_fk;
-  String homework_id ;
-  String stu_HWpath;
-  String stu_doh;
-  String stu_dos;
-  String subjectmst_name;
-  String stu_clientid;
-  String stu_classid;
-  String subjectmst_id;
+  String subjectId;
+  String subjectName;
+  String dateOfHomework;
+  String dateOfSubmission;
+  String homeworkPath;
+  String classId;
+  String className;
+  String studentId;
+  String studentName;
+  String clientId;
+  String finalTimeTableId;
+  String homeworkId;
+  String errorMessage;
+  String homeworkUrl;
 
   factory homeworkmodal.fromMap(Map<String, dynamic> json) => homeworkmodal(
-    FinalDayTimeTable_Id_fk: json["FinalDayTimeTable_Id_fk"],
-    homework_id: json["homework_id"],
-    stu_HWpath: json["stu_HWpath"],
-    stu_doh: json["stu_doh"],
-    stu_dos: json["stu_dos"],
-    subjectmst_name: json["subjectmst_name"],
-    stu_clientid: json["stu_clientid"],
-    stu_classid: json["stu_classid"],
-    subjectmst_id: json["subjectmst_id"],
-  );
+        subjectId: json["subjectmst_id"],
+        subjectName: json["subjectmst_name"],
+        dateOfHomework: json["stu_doh"],
+        dateOfSubmission: json["stu_dos"],
+        homeworkPath: json["stu_hwpath"],
+        classId: json["stu_classid"],
+        className: json["stu_classnm"],
+        studentId: json["stu_id"],
+        studentName: json["stu_name"],
+        clientId: json["stu_clientid"],
+        finalTimeTableId: json["finalDayTimeTable_Id_fk"],
+        homeworkId: json["homework_id"],
+        errorMessage: json["errormessage"],
+        homeworkUrl: json["stu_HWpath1"],
+      );
+  Map<String, dynamic> toMap() => {
+        "subjectmst_id": subjectId,
+        "subjectmst_name": subjectName,
+        "stu_doh": dateOfHomework,
+        "stu_dos": dateOfSubmission,
+        "stu_hwpath": homeworkPath,
+        "stu_classid": classId,
+        "stu_classnm": className,
+        "stu_id": studentId,
+        "stu_name": studentName,
+        "stu_clientid": clientId,
+        "finalDayTimeTable_Id_fk": finalTimeTableId,
+        "homework_id": homeworkId,
+        "errormessage": errorMessage,
+        "stu_HWpath1": homeworkUrl,
+      };
 }

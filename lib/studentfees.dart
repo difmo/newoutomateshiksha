@@ -14,9 +14,13 @@ class studentfees extends StatefulWidget {
 }
 
 class _studentfeesState extends State<studentfees> {
-  bool hasbeenpressed1 = true;
-  bool hasbeenpressed2 = false;
-  bool hasbeenpressed3 = false;
+  int selectedIndex = 0; // Stores the selected tab index
+
+  List<String> tabLabels = [
+    "Regular Fees",
+    "Additional Fees",
+    "Admission Fees"
+  ];
 
   List regularItemlist = [];
   List additionalItemlist = [];
@@ -36,9 +40,11 @@ class _studentfeesState extends State<studentfees> {
     String? stucode = prefs.getString('clientid')!;
     String? brid = prefs.getString('BranchID')!;
     String? fsecid = prefs.getString('F_SessionId')!;
+    print("clientid :: $stucode");
+    print("BranchId :: $brid");
 
     String baseUrl = 'https://shikshaappservice.kalln.com/api/Home/stu_Fee/';
-    String url = '$baseUrl' + 'stucode/1/brid/$brid/fsecid/$fsecid';
+    String url = '$baseUrl' + 'stucode/00154/brid/$brid/fsecid/$fsecid';
 
     // Print the base URL and the full URL
     print('Base URL: $baseUrl');
@@ -55,24 +61,22 @@ class _studentfeesState extends State<studentfees> {
       admissionItemlist.clear();
 
       var parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-
       // Check if the error message exists in the response
-      if (parsed.isNotEmpty && parsed[0]['errormessage'] != null) {
+      if (parsed.isNotEmpty && parsed[0]['errormessage'] != "Correct") {
         setState(() {
           errorMessage = parsed[0]['errormessage'];
         });
         return []; // Return an empty list as the fee data is not found
       }
-
       // If no error, process the fee data
       for (int i = 0; i < parsed.length; i++) {
-        if (parsed[i]['Feermk'] == 'Regular Fees') {
+        if (parsed[i]['feermk'] == 'Regular Fees') {
           regularItemlist.add(parsed[i]);
         }
-        if (parsed[i]['Feermk'] == 'Additional Fees') {
+        if (parsed[i]['feermk'] == 'Additional Fees') {
           additionalItemlist.add(parsed[i]);
         }
-        if (parsed[i]['Feermk'] == 'Admission Fees') {
+        if (parsed[i]['feermk'] == 'Admission Fees') {
           admissionItemlist.add(parsed[i]);
         }
       }
@@ -93,157 +97,103 @@ class _studentfeesState extends State<studentfees> {
         backgroundColor: appcolors.primaryColor,
         iconTheme: IconThemeData(color: appcolors.whiteColor),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(top: 10),
-          color: appcolors.primaryColor,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(40.0),
-              topRight: Radius.circular(40.0),
-            ),
-            child: Container(
-              color: appcolors.whiteColor,
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.fromLTRB(30, 30, 10, 10),
+      body: Container(
+        padding: EdgeInsets.only(top: 10),
+        color: appcolors.primaryColor,
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(0.0),
+            topRight: Radius.circular(0.0),
+          ),
+          child: Container(
+            color: appcolors.whiteColor,
+            child: Column(
+              children: [
+                // Error message display
+                if (errorMessage.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      "Student Fee",
+                      errorMessage,
                       style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: appcolors.backColor,
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  // Error message display
-                  if (errorMessage.isNotEmpty)
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        errorMessage,
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
                       ),
                     ),
-                  Container(
-                    color: Colors.black12,
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InkWell(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            color: hasbeenpressed1
-                                ? appcolors.primaryColor
-                                : Colors.transparent,
-                            child: Text(
-                              "Regular Fees",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: hasbeenpressed1
-                                      ? appcolors.whiteColor
-                                      : appcolors.backColor),
-                            ),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              hasbeenpressed1 = true;
-                              hasbeenpressed2 = false;
-                              hasbeenpressed3 = false;
-                            });
-                          },
-                        ),
-                        InkWell(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            color: hasbeenpressed2
-                                ? appcolors.primaryColor
-                                : Colors.transparent,
-                            child: Text(
-                              "Additional Fees",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: hasbeenpressed2
-                                      ? appcolors.whiteColor
-                                      : appcolors.backColor),
-                            ),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              hasbeenpressed1 = false;
-                              hasbeenpressed2 = true;
-                              hasbeenpressed3 = false;
-                            });
-                          },
-                        ),
-                        InkWell(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            color: hasbeenpressed3
-                                ? appcolors.primaryColor
-                                : Colors.transparent,
-                            child: Text(
-                              "Admission Fees",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: hasbeenpressed3
-                                      ? appcolors.whiteColor
-                                      : appcolors.backColor),
-                            ),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              hasbeenpressed1 = false;
-                              hasbeenpressed2 = false;
-                              hasbeenpressed3 = true;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
                   ),
-                  SizedBox(
-                    height: 500,
-                    child: FutureBuilder(
-                      future: fetchPost(),
-                      builder: (ctx, snapshot) {
-                        if (snapshot.hasData) {
-                          int? type = 0;
 
-                          type = hasbeenpressed1
-                              ? regularItemlist.length
-                              : hasbeenpressed2
-                                  ? additionalItemlist.length
-                                  : hasbeenpressed3
-                                      ? admissionItemlist.length
-                                      : 0;
-
-                          return ListView.builder(
-                              itemCount: type,
-                              itemBuilder: (BuildContext context, int index) {
-                                return getRow(index, snapshot);
-                              });
-                        } else if (snapshot.hasError) {
-                          return Center(
-                              child: Text('Error: ${snapshot.error}'));
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      },
-                    ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      vertical: 10, horizontal: 8), // Margin for spacing
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 5,
+                        spreadRadius: 2,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                  child: ToggleButtons(
+                    borderRadius: BorderRadius.circular(30),
+                    selectedBorderColor: appcolors.primaryColor,
+                    fillColor: appcolors.primaryColor.withOpacity(0.2),
+                    color: appcolors.backColor,
+                    selectedColor: appcolors.primaryColor,
+                    textStyle:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    isSelected:
+                        List.generate(3, (index) => index == selectedIndex),
+                    onPressed: (index) {
+                      setState(() {
+                        selectedIndex = index;
+                      });
+                    },
+                    children: tabLabels
+                        .map((label) => Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 10),
+                              child: Text(
+                                label,
+                                style: TextStyle(fontSize: 12),
+                              ),
+                            ))
+                        .toList(),
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height *
+                      0.8, // 70% of screen height
+                  child: FutureBuilder(
+                    future: fetchPost(),
+                    builder: (ctx, snapshot) {
+                      if (snapshot.hasData) {
+                        int type = selectedIndex == 0
+                            ? regularItemlist.length
+                            : selectedIndex == 1
+                                ? additionalItemlist.length
+                                : selectedIndex == 2
+                                    ? admissionItemlist.length
+                                    : 0;
+
+                        return ListView.builder(
+                          itemCount: type,
+                          itemBuilder: (BuildContext context, int index) {
+                            return getRow(index, snapshot);
+                          },
+                        );
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -253,12 +203,12 @@ class _studentfeesState extends State<studentfees> {
 
   Widget getRow(int index, var snapshot) {
     return Card(
-      margin: EdgeInsets.fromLTRB(10, 0, 10, 1),
+      margin: EdgeInsets.fromLTRB(10, 1, 10, 0),
       color: Colors.white,
       shadowColor: appcolors.primaryColor,
       elevation: 1,
       child: SizedBox(
-        height: 100,
+        height: 110,
         child: ListTile(
           title: Center(
             child: Column(
@@ -271,7 +221,7 @@ class _studentfeesState extends State<studentfees> {
                       padding: EdgeInsets.fromLTRB(6, 5, 6, 2),
                       color: Colors.black12,
                       child: Text(
-                        "Receipt No - XXXX${hasbeenpressed1 ? regularItemlist[index]['FeeGenID'] : hasbeenpressed2 ? additionalItemlist[index]['FeeGenID'] : admissionItemlist[index]['FeeGenID']}",
+                        "Receipt No - XXXX${selectedIndex == 0 ? regularItemlist[index]['feeGenID'] : selectedIndex == 1 ? additionalItemlist[index]['feeGenID'] : admissionItemlist[index]['feeGenID']}",
                         style:
                             TextStyle(fontWeight: FontWeight.bold, fontSize: 8),
                       )),
@@ -282,7 +232,7 @@ class _studentfeesState extends State<studentfees> {
                 Container(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "FeeMonth - ${hasbeenpressed1 ? regularItemlist[index]['Fee_elementName'] : hasbeenpressed2 ? additionalItemlist[index]['Fee_elementName'] : admissionItemlist[index]['Fee_elementName']}",
+                      "FeeMonth - ${selectedIndex == 0 ? regularItemlist[index]['fee_elementName'] : selectedIndex == 1 ? additionalItemlist[index]['fee_elementName'] : admissionItemlist[index]['fee_elementName']}",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w900,
@@ -295,7 +245,7 @@ class _studentfeesState extends State<studentfees> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "DueAmount : ${hasbeenpressed1 ? regularItemlist[index]['DueAmt'] : hasbeenpressed2 ? additionalItemlist[index]['DueAmt'] : admissionItemlist[index]['DueAmt']}",
+                      "DueAmount : ${selectedIndex == 0 ? regularItemlist[index]['dueAmt'] : selectedIndex == 1 ? additionalItemlist[index]['dueAmt'] : admissionItemlist[index]['dueAmt']}",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w900,
@@ -304,7 +254,7 @@ class _studentfeesState extends State<studentfees> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      "FeeAmount : ${hasbeenpressed1 ? regularItemlist[index]['Feeamt'] : hasbeenpressed2 ? additionalItemlist[index]['Feeamt'] : admissionItemlist[index]['Feeamt']}",
+                      "FeeAmount : ${selectedIndex == 0 ? regularItemlist[index]['feeamt'] : selectedIndex == 1 ? additionalItemlist[index]['feeamt'] : admissionItemlist[index]['feeamt']}",
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w900,
@@ -319,8 +269,9 @@ class _studentfeesState extends State<studentfees> {
                 ),
                 Container(
                   alignment: Alignment.centerLeft,
+                  // padding: EdgeInsets.only(bottom: 20.0),
                   child: Text(
-                    "Due Date - ${hasbeenpressed1 ? regularItemlist[index]['feeduedt'] : hasbeenpressed2 ? additionalItemlist[index]['feeduedt'] : admissionItemlist[index]['feeduedt']}",
+                    "Due Date - ${selectedIndex == 0 ? regularItemlist[index]['feeduedt'] : selectedIndex == 1 ? additionalItemlist[index]['feeduedt'] : admissionItemlist[index]['feeduedt']}",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w900,

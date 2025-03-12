@@ -15,7 +15,7 @@ class _homeworkopenitemState extends State<homeworkopenitem> {
   @override
   void initState() {
     super.initState();
-    print("hhhhhhhhhhhh ${widget.openrequest.stu_HWpath}");
+    print("hhhhhhhhhhhh ${widget.openrequest.homeworkPath}");
   }
 
   @override

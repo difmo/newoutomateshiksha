@@ -66,12 +66,11 @@ class _HomeworkItemRemarksState extends State<HomeworkItemRemarks> {
   /// Saves homework details in SharedPreferences
   Future<void> _saveHomeworkDetails() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        'FinalDayTTid', widget.openrequest.FinalDayTimeTable_Id_fk);
-    await prefs.setString('hwid', widget.openrequest.homework_id);
-    await prefs.setString('clienteid', widget.openrequest.stu_clientid);
-    await prefs.setString('ClasiD', widget.openrequest.stu_classid);
-    await prefs.setString('subid', widget.openrequest.subjectmst_id);
+    await prefs.setString('FinalDayTTid', widget.openrequest.finalTimeTableId);
+    await prefs.setString('hwid', widget.openrequest.homeworkId);
+    await prefs.setString('clienteid', widget.openrequest.clientId);
+    await prefs.setString('ClasiD', widget.openrequest.classId);
+    await prefs.setString('subid', widget.openrequest.subjectId);
   }
 
   @override
@@ -90,8 +89,8 @@ class _HomeworkItemRemarksState extends State<HomeworkItemRemarks> {
         color: appcolors.primaryColor,
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(40.0),
-            topRight: Radius.circular(40.0),
+            topLeft: Radius.circular(0.0),
+            topRight: Radius.circular(0.0),
           ),
           child: Container(
             color: appcolors.whiteColor,

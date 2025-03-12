@@ -83,17 +83,21 @@ class _StudentCircularState extends State<StudentCircular> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Circulars'),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: const Text(
+          'Circulars',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: appcolors.primaryColor,
       ),
       body: Container(
         padding: const EdgeInsets.only(top: 10),
         color: appcolors.primaryColor,
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(40.0),
-            topRight: Radius.circular(40.0),
-          ),
+          // borderRadius: const BorderRadius.only(
+          //   topLeft: Radius.circular(40.0),
+          //   topRight: Radius.circular(40.0),
+          // ),
           child: Container(
             color: appcolors.whiteColor,
             child: FutureBuilder<List<circularmodal>>(

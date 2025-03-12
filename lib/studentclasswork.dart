@@ -24,12 +24,31 @@ Future<List<ClassworkModel>> fetchClasswork(String adate) async {
     print("Fetching classwork from URL: $baseUrl");
 
     final response = await http.get(Uri.parse(baseUrl));
+    print("Response Status: ${response.statusCode}");
 
     if (response.statusCode == 200) {
-      final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-      return parsed
-          .map<ClassworkModel>((json) => ClassworkModel.fromMap(json))
-          .toList();
+      print("Response Body: ${response.body}");
+
+      var parsed = json.decode(response.body);
+
+      // Ensure response is a List
+      if (parsed is Map) {
+        parsed =
+            parsed['data'] ?? []; // Adjust this based on actual API structure
+      }
+
+      if (parsed is List) {
+        List<ClassworkModel> classworkList = parsed
+            .map<ClassworkModel>((json) => ClassworkModel.fromMap(json))
+            .toList();
+
+        print(
+            "First Subject Name: ${classworkList.isNotEmpty ? classworkList.first.subjectName : 'No data'}");
+        return classworkList;
+      } else {
+        print("Unexpected JSON format: $parsed");
+        return [];
+      }
     } else {
       throw Exception("Failed to load classwork: ${response.statusCode}");
     }
@@ -100,10 +119,10 @@ class _StudentClassworkState extends State<StudentClasswork> {
         padding: const EdgeInsets.only(top: 10),
         color: appcolors.primaryColor,
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(40.0),
-            topRight: Radius.circular(40.0),
-          ),
+          // borderRadius: const BorderRadius.only(
+          //   topLeft: Radius.circular(40.0),
+          //   topRight: Radius.circular(40.0),
+          // ),
           child: Container(
             color: Colors.white,
             child: Column(

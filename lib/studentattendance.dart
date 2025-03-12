@@ -41,7 +41,7 @@ class _studentattendanceState extends State<studentattendance> {
 //     var baseUrl =
 // //    06-APR-2023
 //         "https://shikshaappservice.kalln.com/api/Home/GetClassAtten/ClsStruId/2482/BranchId/36/Attan_date/2025-01-24/StuId/26433";
-    print("ssssssssssss$baseUrl");
+    print("ssssssssssss:$baseUrl");
     http.Response response = await http.get(Uri.parse(baseUrl));
 
     if (response.statusCode == 200) {
@@ -77,10 +77,10 @@ class _studentattendanceState extends State<studentattendance> {
         padding: EdgeInsets.only(top: 10),
         color: appcolors.primaryColor,
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(40.0),
-            topRight: Radius.circular(40.0),
-          ),
+          // borderRadius: const BorderRadius.only(
+          //   topLeft: Radius.circular(40.0),
+          //   topRight: Radius.circular(40.0),
+          // ),
           child: Container(
             color: appcolors.whiteColor,
             child: Column(

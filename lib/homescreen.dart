@@ -31,7 +31,7 @@ class homescreen extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   State<homescreen> createState() => _homescreenState();
-
+   
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
 }
@@ -563,7 +563,7 @@ class _homescreenState extends State<homescreen> {
                                 hasBeenPressed8 = false;
                                 hasBeenPressed9 = true;
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => studentChats()));
+                                    builder: (context) => StudentChats()));
                               });
                             },
                           ),
