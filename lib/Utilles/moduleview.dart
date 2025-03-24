@@ -21,7 +21,7 @@ class moduleview extends StatelessWidget {
         // margin: EdgeInsets.fromLTRB(10,5,10,10),
         color: hasBeenPressed ? appcolors.primaryColor : appcolors.whiteColor,
         shadowColor: Colors.black,
-        elevation: 5,
+        elevation: 2,
         child: ClipRect(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

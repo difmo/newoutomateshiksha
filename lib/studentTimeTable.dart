@@ -237,6 +237,7 @@ class _StudentTimeTableState extends State<StudentTimeTable> {
       itemBuilder: (context, index) {
         final item = items[index];
         return Card(
+          color: Colors.white,
           margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 5),
           elevation: 1,
           child: ListTile(

@@ -90,29 +90,28 @@ class _studentfeesState extends State<studentfees> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Fees",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, color: appcolors.whiteColor)),
-        backgroundColor: appcolors.primaryColor,
-        iconTheme: IconThemeData(color: appcolors.whiteColor),
-      ),
-      body: Container(
-        padding: EdgeInsets.only(top: 10),
-        color: appcolors.primaryColor,
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(0.0),
-            topRight: Radius.circular(0.0),
-          ),
-          child: Container(
-            color: appcolors.whiteColor,
+      backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: Text("Fees",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: appcolors.whiteColor)),
+          backgroundColor: appcolors.primaryColor,
+          iconTheme: IconThemeData(color: appcolors.whiteColor),
+        ),
+        body: Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(0.0),
+              topRight: Radius.circular(0.0),
+            ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Error message display
+                // 🔹 Error Message Display (If Available)
                 if (errorMessage.isNotEmpty)
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
                       errorMessage,
                       style: TextStyle(
@@ -123,54 +122,71 @@ class _studentfeesState extends State<studentfees> {
                     ),
                   ),
 
-                Container(
-                  margin: EdgeInsets.symmetric(
-                      vertical: 10, horizontal: 8), // Margin for spacing
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 5,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                  ),
-                  child: ToggleButtons(
-                    borderRadius: BorderRadius.circular(30),
-                    selectedBorderColor: appcolors.primaryColor,
-                    fillColor: appcolors.primaryColor.withOpacity(0.2),
-                    color: appcolors.backColor,
-                    selectedColor: appcolors.primaryColor,
-                    textStyle:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    isSelected:
-                        List.generate(3, (index) => index == selectedIndex),
-                    onPressed: (index) {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                    },
-                    children: tabLabels
-                        .map((label) => Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 10),
-                              child: Text(
-                                label,
-                                style: TextStyle(fontSize: 12),
-                              ),
-                            ))
-                        .toList(),
+                // 🔹 Optional Row for Tab Selection (Uncomment if needed)
+
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 8), // Margin for spacing
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 5,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: ToggleButtons(
+                      borderRadius: BorderRadius.circular(30),
+                      selectedBorderColor: appcolors.primaryColor,
+                      fillColor: appcolors.primaryColor.withOpacity(0.2),
+                      color: appcolors.backColor,
+                      selectedColor: appcolors.primaryColor,
+                      textStyle:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      isSelected:
+                          List.generate(3, (index) => index == selectedIndex),
+                      onPressed: (index) {
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                      },
+                      children: tabLabels
+                          .map((label) => Padding(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
+                                child: Text(
+                                  label,
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                              ))
+                          .toList(),
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height *
-                      0.8, // 70% of screen height
+                // 🔹 List Section (Takes Remaining Space)
+                Expanded(
                   child: FutureBuilder(
                     future: fetchPost(),
                     builder: (ctx, snapshot) {
-                      if (snapshot.hasData) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            'Error: ${snapshot.error}',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data == null) {
+                        return Center(
+                          child: Text("No data available"),
+                        );
+                      } else {
                         int type = selectedIndex == 0
                             ? regularItemlist.length
                             : selectedIndex == 1
@@ -182,13 +198,12 @@ class _studentfeesState extends State<studentfees> {
                         return ListView.builder(
                           itemCount: type,
                           itemBuilder: (BuildContext context, int index) {
-                            return getRow(index, snapshot);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4.0),
+                              child: getRow(index, snapshot),
+                            );
                           },
                         );
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        return Center(child: CircularProgressIndicator());
                       }
                     },
                   ),
@@ -196,9 +211,8 @@ class _studentfeesState extends State<studentfees> {
               ],
             ),
           ),
-        ),
-      ),
-    );
+        )
+        );
   }
 
   Widget getRow(int index, var snapshot) {

@@ -22,17 +22,21 @@ class _homeworkopenitemState extends State<homeworkopenitem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text('View Home Work'),
       ),
       body: Column(
         children: [
           Expanded(
             child: InAppWebView(
-              initialUrlRequest: URLRequest(
-                  // url: Uri.parse("${widget.openrequest.stu_HWpath}"))
-                  ),
-            ),
-          )
+                initialUrlRequest: URLRequest(
+                    url:
+                     WebUri.uri(
+                        Uri.parse(widget.openrequest.homeworkPath)
+                        )
+                        )),
+          ),
+          // )
         ],
       ),
     );

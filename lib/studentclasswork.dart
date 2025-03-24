@@ -214,46 +214,50 @@ class _StudentClassworkState extends State<StudentClasswork> {
 
   /// Classwork card widget
   Widget _buildClassworkCard(ClassworkModel item) {
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-      elevation: 2,
-      child: ListTile(
-        onTap: () {
-          if (item.subjectName == null) {
-            toasts().toastsShortone("No Records Found");
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => classworkopenitem(openrequest: item),
-              ),
-            );
-          }
-        },
-        leading: CircleAvatar(
-          radius: 25,
-          backgroundColor: appcolors.primaryColor,
-          child: CircleAvatar(
-            radius: 23,
-            backgroundColor: Colors.white,
-            backgroundImage: _getImageForContentType(item.contName),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Card(
+        color: Colors.white,
+        margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        elevation: 2,
+        child: ListTile(
+          onTap: () {
+            if (item.subjectName == null) {
+              toasts().toastsShortone("No Records Found");
+            } else {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => classworkopenitem(openrequest: item),
+                ),
+              );
+            }
+          },
+          leading: CircleAvatar(
+            radius: 25,
+            backgroundColor: appcolors.primaryColor,
+            child: CircleAvatar(
+              radius: 23,
+              backgroundColor: Colors.white,
+              backgroundImage: _getImageForContentType(item.contName),
+            ),
           ),
-        ),
-        title: Text(
-          item.subjectName ?? "Unknown Subject",
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
+          title: Text(
+            item.subjectName ?? "Unknown Subject",
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          item.topicName ?? "No Topic Available",
-          style: const TextStyle(
-            fontSize: 12,
-            color: CupertinoColors.systemGrey2,
+          subtitle: Text(
+            item.topicName ?? "No Topic Available",
+            style: const TextStyle(
+              fontSize: 12,
+              color: CupertinoColors.systemGrey2,
+            ),
+            overflow: TextOverflow.ellipsis,
           ),
-          overflow: TextOverflow.ellipsis,
         ),
       ),
     );

@@ -16,7 +16,11 @@ Future<List<hwitemremarkmodal>> hwitemremarkmodalfunction() async {
     String? classstruid = prefs.getString('ClassID');
     String? subid = prefs.getString('subid');
     String? finatimetableid = prefs.getString('FinalDayTTid');
-
+    print("Student ID: $stuid");
+    print("Branch ID: $branchid");
+    print("Class ID: $classstruid");
+    print("Subject ID: $subid");
+    print("Final TimeTable ID: $finatimetableid");
     // Ensure that none of these values are null
     if (stuid == null ||
         branchid == null ||
@@ -31,16 +35,26 @@ Future<List<hwitemremarkmodal>> hwitemremarkmodalfunction() async {
     print("Base URL: $baseUrl");
 
     final response = await http.get(Uri.parse(baseUrl));
-
+    print("responsefdfs: ${response}");
+    print("Response Status Code: ${response.statusCode}"); // Log status code
+    print("Response Body: ${response.body}");
     if (response.statusCode == 200) {
-      final parsed = json.decode(response.body).cast<Map<String, dynamic>>();
-      return parsed
-          .map<hwitemremarkmodal>((json) => hwitemremarkmodal.fromMap(json))
-          .toList();
+      final parsed = json.decode(response.body);
+      // .cast<Map<String, dynamic>>();
+      if (parsed is List) {
+        return parsed
+            .map<hwitemremarkmodal>((json) => hwitemremarkmodal.fromMap(json))
+            .toList();
+      } else {
+        throw Exception("API returned invalid JSON format.");
+      }
+    } else if (response.statusCode == 404) {
+      throw Exception("No remarks found for this student.");
     } else {
       throw Exception('Failed to load remarks: ${response.statusCode}');
     }
   } catch (e) {
+    print("Error fetching homework remarks: $e");
     throw Exception("Error fetching homework remarks: $e");
   }
 }
@@ -79,7 +93,8 @@ class _HomeworkItemRemarksState extends State<HomeworkItemRemarks> {
       appBar: AppBar(
         title: const Text(
           'Homework Remarks',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+              fontWeight: FontWeight.bold, color: appcolors.whiteColor),
         ),
         backgroundColor: appcolors.primaryColor,
         iconTheme: const IconThemeData(color: Colors.white),
@@ -100,25 +115,26 @@ class _HomeworkItemRemarksState extends State<HomeworkItemRemarks> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
+                  print("Error: ${snapshot.error}");
                   return Center(
                     child: Text(
                       "Error: ${snapshot.error}",
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  );
-                } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      "No remarks available for this homework.",
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(color: Colors.red, fontSize: 14),
                     ),
                   );
                 } else if (snapshot.hasData) {
+                  if (snapshot.data == null || snapshot.data!.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        "No remarks available for this homework.",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    );
+                  }
                   return ListView.builder(
                     itemCount: snapshot.data!.length,
-                    itemBuilder: (_, index) => _buildRemarkCard(
-                      snapshot.data![index],
-                    ),
+                    itemBuilder: (_, index) =>
+                        _buildRemarkCard(snapshot.data![index]),
                   );
                 }
                 return const SizedBox();
@@ -133,6 +149,7 @@ class _HomeworkItemRemarksState extends State<HomeworkItemRemarks> {
   /// Builds a card for each remark
   Widget _buildRemarkCard(hwitemremarkmodal remark) {
     return Card(
+      color: Colors.white,
       margin: const EdgeInsets.fromLTRB(5, 0, 5, 1),
       elevation: 2,
       child: ListTile(

@@ -39,40 +39,49 @@ class _drawerState extends State<drawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
+      child: Column(
         children: [
-          DrawerHeader(
-            decoration: BoxDecoration(color: appcolors.primaryColor),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    child: CircleAvatar(
+          Container(
+            height: MediaQuery.of(context).size.height * 0.28,
+            child: DrawerHeader(
+              decoration: BoxDecoration(color: appcolors.primaryColor),
+              child: SizedBox(
+                width: double.infinity, // Makes it take full width
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
                       radius: 50,
                       backgroundColor: appcolors.whiteColor,
                       child: CircleAvatar(
                         radius: 48,
                         backgroundColor: appcolors.whiteColor,
                         backgroundImage: NetworkImage(
-                            'https://cdn-icons-png.flaticon.com/512/219/219983.png'),
+                          'https://cdn-icons-png.flaticon.com/512/219/219983.png',
+                        ),
                       ),
                     ),
-                  ),
-                  Text(
-                    studentname,
-                    style: TextStyle(
+                    SizedBox(height: 8), // Added spacing
+                    Text(
+                      studentname,
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: appcolors.whiteColor),
-                  ),
-                  Text(
-                    "Class : ${"$ClassNm$secname"}  | $studentid",
-                    style: TextStyle(
+                        color: appcolors.whiteColor,
+                      ),
+                    ),
+                    SizedBox(height: 5), // Added spacing
+                    Text(
+                      "Class: ${"$ClassNm$secname"} | $studentid",
+                      textAlign: TextAlign.center, // Ensure text is centered
+                      style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
-                        color: appcolors.whiteColor),
-                  ),
-                ],
+                        color: appcolors.whiteColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

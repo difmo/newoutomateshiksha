@@ -17,12 +17,17 @@ class _circuleropenState extends State<circuleropen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Open Circuler'),
       ),
-      body: SfPdfViewer.network(
-        widget.openrequest.circularFileName,
-        key: _pdfViewerKey,
+      body: Container(
+        color:      Colors.white,
+        height: double.infinity,
+        child: SfPdfViewer.network(
+          widget.openrequest.circularFileName,
+          key: _pdfViewerKey,
+        ),
       ),
     );
   }

@@ -138,63 +138,66 @@ class _StudentChatsState extends State<StudentChats> {
     final query = snapshot.data![index];
     print("[INFO] Displaying query: ${query.qryNo}");
 
-    return Card(
-      margin: const EdgeInsets.fromLTRB(5, 0, 5, 1),
-      color: Colors.white,
-      shadowColor: appcolors.primaryColor,
-      elevation: 2,
-      child: SizedBox(
-        height: 80,
-        child: ListTile(
-          onTap: () {
-            print("[INFO] Query tapped: ${query.qryNo}");
-            toasts().toastsShortone("Chat module is coming soon.");
-          },
-          leading: CircleAvatar(
-            radius: 25,
-            backgroundColor: appcolors.primaryColor,
-            child: CircleAvatar(
-              radius: 23,
-              backgroundColor: Colors.white,
-              backgroundImage: const NetworkImage(
-                'https://cdn-icons-png.flaticon.com/512/6728/6728469.png',
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Card(
+        margin: const EdgeInsets.fromLTRB(5, 0, 5, 1),
+        color: Colors.white,
+        shadowColor: appcolors.primaryColor,
+        elevation: 1,
+        child: SizedBox(
+          height: 80,
+          child: ListTile(
+            onTap: () {
+              print("[INFO] Query tapped: ${query.qryNo}");
+              toasts().toastsShortone("Chat module is coming soon.");
+            },
+            leading: CircleAvatar(
+              radius: 25,
+              backgroundColor: appcolors.primaryColor,
+              child: CircleAvatar(
+                radius: 23,
+                backgroundColor: Colors.white,
+                backgroundImage: const NetworkImage(
+                  'https://cdn-icons-png.flaticon.com/512/6728/6728469.png',
+                ),
               ),
             ),
-          ),
-          title: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        height: 20,
-                        width: 200,
-                        child: Text(
-                          "Query No : ${query.qryNo}",
+            title: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                          height: 20,
+                          width: 200,
+                          child: Text(
+                            "Query No : ${query.qryNo}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      SizedBox(
+                          height: 20,
+                          width: 200,
+                          child: Text(
+                            "Topic Name : ${query.chatTopicName}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                            overflow: TextOverflow.ellipsis,
+                          )),
+                      Text("Create Date : ${query.createDate}",
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
-                          overflow: TextOverflow.ellipsis,
-                        )),
-                    SizedBox(
-                        height: 20,
-                        width: 200,
-                        child: Text(
-                          "Topic Name : ${query.chatTopicName}",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 12),
-                          overflow: TextOverflow.ellipsis,
-                        )),
-                    Text("Create Date : ${query.createDate}",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                            color: CupertinoColors.systemGrey2)),
-                  ],
-                ),
-              ],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 10,
+                              color: CupertinoColors.systemGrey2)),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

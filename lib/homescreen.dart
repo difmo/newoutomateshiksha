@@ -31,7 +31,7 @@ class homescreen extends StatefulWidget implements PreferredSizeWidget {
 
   @override
   State<homescreen> createState() => _homescreenState();
-   
+
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
 }
@@ -161,6 +161,7 @@ class _homescreenState extends State<homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Shiksha ERP",
             style: TextStyle(
@@ -242,11 +243,46 @@ class _homescreenState extends State<homescreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Card(
-                                child: Image.network(
-                              BranchLogo,
-                              height: 80,
-                              width: 80,
-                            )),
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.network(
+                                    BranchLogo,
+                                    height: 80,
+                                    width: 80,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return SizedBox(
+                                            height: 80,
+                                            width: 80,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        (loadingProgress
+                                                                .expectedTotalBytes ??
+                                                            1)
+                                                    : null,
+                                                color: appcolors.primaryColor,
+                                              ),
+                                            ));
+                                      }
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Icon(Icons.broken_image,
+                                          size: 80, color: Colors.grey);
+                                    },
+                                  )
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -265,7 +301,7 @@ class _homescreenState extends State<homescreen> {
                       margin: EdgeInsets.fromLTRB(15, 10, 15, 20),
                       color: Colors.white,
                       shadowColor: Colors.black,
-                      elevation: 10,
+                      elevation: 4,
                       child: Row(
                         children: [
                           Container(
@@ -353,6 +389,7 @@ class _homescreenState extends State<homescreen> {
               ),
             ),
             Container(
+              decoration: BoxDecoration(color: Colors.white),
               child: Column(
                 children: <Widget>[
                   SizedBox(
