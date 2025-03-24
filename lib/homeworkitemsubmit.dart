@@ -77,11 +77,11 @@ class _homeworkitemsubmitState extends State<homeworkitemsubmit> {
 
   gethomeworkid() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('FinalDayTTid', widget.openrequest.FinalDayTimeTable_Id_fk);
-    prefs.setString('hwid', widget.openrequest.homework_id);
-    prefs.setString('clienteid', widget.openrequest.stu_clientid);
-    prefs.setString('ClasiD', widget.openrequest.stu_classid);
-    prefs.setString('subid', widget.openrequest.subjectmst_id);
+    prefs.setString('FinalDayTTid', widget.openrequest.finalTimeTableId);
+    prefs.setString('hwid', widget.openrequest.homeworkId);
+    prefs.setString('clienteid', widget.openrequest.classId);
+    prefs.setString('ClasiD', widget.openrequest.classId);
+    prefs.setString('subid', widget.openrequest.subjectId);
   }
 
   @override

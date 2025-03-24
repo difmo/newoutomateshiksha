@@ -38,7 +38,7 @@ class _studentfeesState extends State<studentfees> {
     String? fsecid = prefs.getString('F_SessionId')!;
 
     String baseUrl = 'https://shikshaappservice.kalln.com/api/Home/stu_Fee/';
-    String url = baseUrl + 'stucode/1/brid/$brid/fsecid/$fsecid';
+    String url = '$baseUrl' + 'stucode/1/brid/$brid/fsecid/$fsecid';
 
     // Print the base URL and the full URL
     print('Base URL: $baseUrl');

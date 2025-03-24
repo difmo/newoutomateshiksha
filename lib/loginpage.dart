@@ -20,7 +20,7 @@ import 'homescreen.dart';
 checklogin(String appID, String studentID, String password,
     BuildContext context) async {
   var uri =
-      ("https://shikshaappservice.kalln.com/api/Home/GetLoginApp/logid/$appID/passid/$studentID/brid/$password");
+      ("https://shikshaappservice.kalln.com/api/Home/GetLoginApp/logid/$studentID/passid/$password/brid/$appID");
   try {
     var response = await get(Uri.parse(uri));
     var dataa = jsonDecode(response.body);

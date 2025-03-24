@@ -5,7 +5,7 @@ import 'Utilles/textfields.dart';
 
 class chatqueryitempage extends StatefulWidget {
   const chatqueryitempage({super.key, required this.openrequest});
-  final chatquerylistmodal openrequest;
+  final ChatQueryListModel openrequest;
 
   @override
   State<chatqueryitempage> createState() => _chatqueryitempageState();

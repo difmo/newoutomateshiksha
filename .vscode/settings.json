@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/development/flutter_works/SIPL/newoutomateshiksha/linux"
+  "cmake.sourceDirectory": "C:/Difmo/flutter_works/newoutomateshiksha/linux",
+  "java.compile.nullAnalysis.mode": "automatic"
 }

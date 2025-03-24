@@ -68,10 +68,10 @@ class _StudentNoticesState extends State<StudentNotices> {
         padding: EdgeInsets.only(top: 10),
         color: appcolors.primaryColor,
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(40.0),
-            topRight: Radius.circular(40.0),
-          ),
+          // borderRadius: const BorderRadius.only(
+          //   topLeft: Radius.circular(40.0),
+          //   topRight: Radius.circular(40.0),
+          // ),
           child: Container(
             color: appcolors.whiteColor,
             child: Column(
@@ -82,7 +82,7 @@ class _StudentNoticesState extends State<StudentNotices> {
                   child: Text(
                     "NOTIFICATION",
                     style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.bold, 
                       color: appcolors.backColor,
                     ),
                     textAlign: TextAlign.left,

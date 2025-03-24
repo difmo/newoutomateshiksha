@@ -14,14 +14,14 @@ class TimetableModel {
     required this.subjectMstID,
     required this.subjectName,
     required this.clsstrucId,
-    required this.branchId,
-    required this.fkgpclsId,
+    required this.branchid,
+    required this.fkgpclsid,
     required this.dShrtNm,
     required this.dayID,
     required this.periodTime,
     required this.techName,
     required this.mobNo,
-    required this.errorMessage,
+    required this.errormessage,
   });
 
   String tT_PK;
@@ -31,14 +31,14 @@ class TimetableModel {
   String subjectMstID;
   String subjectName;
   String clsstrucId;
-  String branchId;
-  String fkgpclsId;
+  String branchid;
+  String fkgpclsid;
   String dShrtNm;
   String dayID;
   String periodTime;
   String techName;
   String mobNo;
-  String errorMessage;
+  String errormessage;
 
   // Factory constructor to create an instance from JSON Map
   factory TimetableModel.fromMap(Map<String, dynamic> json) => TimetableModel(
@@ -49,14 +49,14 @@ class TimetableModel {
         subjectMstID: json["subjectMstID"],
         subjectName: json["subjectName"],
         clsstrucId: json["clsstrucId"],
-        branchId: json["branchid"],
-        fkgpclsId: json["fkgpclsid"],
+        branchid: json["branchid"],
+        fkgpclsid: json["fkgpclsid"],
         dShrtNm: json["dShrtNm"],
         dayID: json["dayID"],
         periodTime: json["periodTime"],
         techName: json["techName"],
         mobNo: json["mobNo"],
-        errorMessage: json["errormessage"],
+        errormessage: json["errormessage"],
       );
 
   // Method to convert an instance to JSON Map
@@ -68,13 +68,13 @@ class TimetableModel {
         "subjectMstID": subjectMstID,
         "subjectName": subjectName,
         "clsstrucId": clsstrucId,
-        "branchid": branchId,
-        "fkgpclsid": fkgpclsId,
+        "branchid": branchid,
+        "fkgpclsid": fkgpclsid,
         "dShrtNm": dShrtNm,
         "dayID": dayID,
         "periodTime": periodTime,
         "techName": techName,
         "mobNo": mobNo,
-        "errormessage": errorMessage,
+        "errormessage": errormessage,
       };
 }

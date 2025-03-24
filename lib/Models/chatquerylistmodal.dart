@@ -1,30 +1,30 @@
-
 import 'dart:convert';
 
-List<chatquerylistmodal> postFromJson(String str) =>
-    List<chatquerylistmodal>.from(json.decode(str).map((x) => chatquerylistmodal.fromMap(x)));
+List<ChatQueryListModel> postFromJson(String str) =>
+    List<ChatQueryListModel>.from(
+        json.decode(str).map((x) => ChatQueryListModel.fromMap(x)));
 
-
-class chatquerylistmodal {
-  chatquerylistmodal({
-    required this.QryNo,
-    required this.ChatTopicName,
-    required this.QryCreatedbyId,
-    required this.ChatQry,
-    required this.Createdate,
+class ChatQueryListModel {
+  ChatQueryListModel({
+    required this.qryNo,
+    required this.chatTopicName,
+    required this.qryCreatedById,
+    required this.chatQry,
+    required this.createDate,
   });
 
-  String QryNo;
-  String ChatTopicName ;
-  String QryCreatedbyId;
-  String ChatQry;
-  String Createdate;
+  String qryNo;
+  String chatTopicName;
+  String qryCreatedById;
+  String chatQry;
+  String createDate;
 
-  factory chatquerylistmodal.fromMap(Map<String, dynamic> json) => chatquerylistmodal(
-    QryNo: json["QryNo"],
-    ChatTopicName: json["ChatTopicName"],
-    QryCreatedbyId: json["QryCreatedbyId"],
-    ChatQry: json["ChatQry"],
-    Createdate: json["Createdate"],
-  );
+  factory ChatQueryListModel.fromMap(Map<String, dynamic> json) =>
+      ChatQueryListModel(
+        qryNo: json["qryNo"] ?? "",
+        chatTopicName: json["chatTopicName"] ?? "",
+        qryCreatedById: json["qryCreatedbyId"] ?? "",
+        chatQry: json["chatQry"] ?? "",
+        createDate: json["createdate"] ?? "",
+      );
 }

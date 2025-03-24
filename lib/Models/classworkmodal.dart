@@ -17,7 +17,7 @@ class ClassworkModel {
     this.topicName,
     this.contName,
     this.fullpath,
-    this.errorMessage,
+    this.errormessage,
   });
 
   String? subjectMasterID;
@@ -30,7 +30,7 @@ class ClassworkModel {
   String? topicName;
   String? contName;
   String? fullpath;
-  String? errorMessage;
+  String? errormessage;
 
   // Factory constructor to create an instance from JSON Map
   factory ClassworkModel.fromMap(Map<String, dynamic> json) => ClassworkModel(
@@ -44,7 +44,7 @@ class ClassworkModel {
         topicName: json["topicName"],
         contName: json["contName"],
         fullpath: json["fullpath"],
-        errorMessage: json["errormessage"],
+        errormessage: json["errormessage"],
       );
 
   // Method to convert an instance to JSON Map
@@ -59,6 +59,6 @@ class ClassworkModel {
         "topicName": topicName,
         "contName": contName,
         "fullpath": fullpath,
-        "errormessage": errorMessage,
+        "errormessage": errormessage,
       };
 }
