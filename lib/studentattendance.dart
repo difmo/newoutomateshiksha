@@ -19,8 +19,8 @@ class studentattendance extends StatefulWidget {
 }
 
 class _studentattendanceState extends State<studentattendance> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
-  DateTime _focusedDay = DateTime.now();
+  final CalendarFormat _calendarFormat = CalendarFormat.month;
+  final DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   List toHighlight = [];
   String apitime = "00:00 AM - 00:00 PM";

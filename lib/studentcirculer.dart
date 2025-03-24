@@ -147,17 +147,13 @@ class _StudentCircularState extends State<StudentCircular> {
       elevation: 2,
       child: ListTile(
         onTap: () {
-          if (circular.circularTitle == null) {
-            toasts().toastsShortone("No Records Found");
-          } else {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => circuleropen(openrequest: circular),
-              ),
-            );
-          }
-        },
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => circuleropen(openrequest: circular),
+            ),
+          );
+                },
         leading: CircleAvatar(
           radius: 25,
           backgroundColor: appcolors.primaryColor,
