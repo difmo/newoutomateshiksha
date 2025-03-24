@@ -42,7 +42,7 @@ class _openhwremarkitemState extends State<openhwremarkitem> {
                       child: Center(
                         child: Expanded(
                             child: Text(
-                          widget.openrequest.HWRemark_text,
+                          widget.openrequest.hwRemark_text??'',
                           style: const TextStyle(
                               fontWeight: FontWeight.w500, fontSize: 16),
                         )),

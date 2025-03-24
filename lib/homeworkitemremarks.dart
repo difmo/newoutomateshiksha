@@ -31,7 +31,8 @@ Future<List<hwitemremarkmodal>> hwitemremarkmodalfunction() async {
     }
 
     final baseUrl =
-        'https://shikshaappservice.kalln.com/api/Home/stu_hwremark/stuid/$stuid/brid/$branchid/classid/$classstruid/subid/$subid/finaldayttid/$finatimetableid';
+        'https://shikshaappservice.kalln.com/api/Home/GetstuHWlist_remark/stuid/$stuid/brid/$branchid/class_struid/$classstruid/subid/$subid/finatimetableid/$finatimetableid';
+    // 'https://shikshaappservice.kalln.com/api/Home/stu_hwremark/stuid/$stuid/brid/$branchid/classid/$classstruid/subid/$subid/finaldayttid/$finatimetableid';
     print("Base URL: $baseUrl");
 
     final response = await http.get(Uri.parse(baseUrl));
@@ -148,40 +149,45 @@ class _HomeworkItemRemarksState extends State<HomeworkItemRemarks> {
 
   /// Builds a card for each remark
   Widget _buildRemarkCard(hwitemremarkmodal remark) {
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.fromLTRB(5, 0, 5, 1),
-      elevation: 2,
-      child: ListTile(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => openhwremarkitem(openrequest: remark),
-            ),
-          );
-        },
-        leading: CircleAvatar(
-          radius: 25,
-          backgroundColor: appcolors.primaryColor,
-          child: const CircleAvatar(
-            radius: 23,
-            backgroundColor: Colors.white,
-            backgroundImage: NetworkImage(
-              'https://cdn1.iconfinder.com/data/icons/human-resources-2-5/128/164-512.png',
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Card(
+        color: Colors.white,
+        margin: const EdgeInsets.fromLTRB(5, 0, 5, 1),
+        elevation: 1,
+        child: ListTile(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => openhwremarkitem(openrequest: remark),
+              ),
+            );
+          },
+          leading: CircleAvatar(
+            radius: 25,
+            backgroundColor: appcolors.primaryColor,
+            child: CircleAvatar(
+              radius: 23,
+              backgroundColor: Colors.white,
+              backgroundImage: NetworkImage(
+                // remark.pathimg,
+                'https://cdn1.iconfinder.com/data/icons/human-resources-2-5/128/164-512.png',
+              ),
             ),
           ),
-        ),
-        title: Text(
-          remark.HWRemark_text ?? "No Remark",
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          remark.CreatedDate ?? "Unknown Date",
-          style: const TextStyle(
-            fontSize: 12,
-            color: CupertinoColors.systemGrey2,
+          title: Text(
+         remark.hwRemark_text!=""? remark.hwRemark_text!:"No Remark",
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 16, color: Colors.black),
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            remark.createdDate ?? "Unknown Date",
+            style: const TextStyle(
+              fontSize: 12,
+              color: CupertinoColors.systemGrey2,
+            ),
           ),
         ),
       ),
